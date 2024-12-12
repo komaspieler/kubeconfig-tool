@@ -56,8 +56,11 @@ title = "Select the cluster which you would like to configure"
 cluster, index = pick(clusters, title)
 print("Selected cluster: {}".format(cluster))
 
-print("\n\nALIAS CONFIG\nEnter an alias you want to use (default: {})".format(cluster))
+print("\n\nALIAS CONFIG\nEnter an alias you want to use (default: {}):".format(cluster))
 alias = input()
+
+print("\n\nNAMESPACE CONFIG\nEnter a namespace you want to set as default (leave empty for none):")
+namespace = input()
 
 # run aws update-kubeconfig
 try:
@@ -88,7 +91,19 @@ if kube_config_file.exists():
 
 
 # get cluster arn
-cluster_arn = [context['context']['cluster'] for context in kubeconfig['contexts'] if context['name'] == alias][0]
+context = [cntxt for cntxt in kubeconfig['contexts'] if cntxt['name'] == alias][0]
+cluster_arn = context['context']['cluster']
+
+print("Updating context with default namespace..", end='')
+if len(namespace) == 0:
+	print("SKIP")
+else:
+	try:
+		context['context']['namespace'] = namespace
+		print("OK")
+	except:
+		print("ERR")
+		exit()
 
 # generate granted config
 granted_exec = {
