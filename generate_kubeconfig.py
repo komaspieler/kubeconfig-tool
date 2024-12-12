@@ -52,6 +52,10 @@ except:
 	print("ERR: {}".format(result.stderr))
 	exit()
 
+if len(clusters) == 0:
+	print("NO CLUSTERS FOUND IN ACCOUNT")
+	exit()
+
 title = "Select the cluster which you would like to configure"
 cluster, index = pick(clusters, title)
 print("Selected cluster: {}".format(cluster))
