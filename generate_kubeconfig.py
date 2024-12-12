@@ -59,6 +59,9 @@ print("Selected cluster: {}".format(cluster))
 print("\n\nALIAS CONFIG\nEnter an alias you want to use (default: {}):".format(cluster))
 alias = input()
 
+if len(alias) == 0:
+	alias = cluster
+
 print("\n\nNAMESPACE CONFIG\nEnter a namespace you want to set as default (leave empty for none):")
 namespace = input()
 
